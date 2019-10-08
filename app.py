@@ -31,5 +31,7 @@ import color_constants
 weather_service = WeatherService()
 
 while(1):
-    display_text(weather_service.get_weather_summary(), color_constants.DARKORANGE)
+    display_text(weather_service.get_weather_summary(tomorrow=False), color_constants.GOLD1)
+    sleep(60)
+    display_text(weather_service.get_weather_summary(tomorrow=True), color_constants.INDIANRED)
     sleep(60)
