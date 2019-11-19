@@ -1,4 +1,5 @@
 import requests
+from weather_icons import weather_icons
 
 
 def display_text(text, color):
@@ -10,6 +11,42 @@ def display_text(text, color):
         "text": text,
         "color": [color.red, color.green, color.blue],
         "count": 1
+    }
+
+    r = requests.post(api_app_url, json=payload, headers=headers)
+
+
+def show_weather_symbols(morning, noon, evening):
+    api_app_url = 'http://192.168.1.6:7000/api/v3/draw'
+    headers = {'content-type': 'application/json'}
+
+    payload = {
+        "repeat": 10,
+        "draw": [
+            {
+                "position": [0, 0],
+                "type": "bmp",
+                "size": [8, 8],
+                "data": weather_icons[morning-1]
+            },
+            {
+                "type": "text",
+                "string": '{0:>5.1f}°'.format(0),
+                "position": [8, 1],
+                "color": [246, 0, 242]
+            },
+            {
+                "type": "show"
+            },
+            {
+                "type": "wait",
+                "ms": 1000
+            },
+            {
+                "type": "exit"
+            }
+        ]
+
     }
 
     r = requests.post(api_app_url, json=payload, headers=headers)

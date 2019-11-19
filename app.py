@@ -28,10 +28,13 @@ import color_constants
 #     sleep(10)
 #     sleep(90)
 
-weather_service = WeatherService()
+# weather_service = WeatherService()
+#
+# while(1):
+#     display_text(weather_service.get_weather_summary(tomorrow=False), color_constants.GOLD1)
+#     sleep(60)
+#     display_text(weather_service.get_weather_summary(tomorrow=True), color_constants.INDIANRED)
+#     sleep(60)
 
-while(1):
-    display_text(weather_service.get_weather_summary(tomorrow=False), color_constants.GOLD1)
-    sleep(60)
-    display_text(weather_service.get_weather_summary(tomorrow=True), color_constants.INDIANRED)
-    sleep(60)
+weather_service = WeatherService()
+weather_service.get_weather_icons(tomorrow=False)

@@ -1,11 +1,13 @@
 import requests
 from lxml import html
 from time import time
+from datetime import datetime, timedelta
 
 class WeatherService:
     def __init__(self):
         self.api_app_url_summary = 'http://www.meteo-paris.com/ile-de-france/previsions.php'
         self.api_app_url_temperatures = 'http://www.meteo-paris.com/ile-de-france/previsions.php'
+        self.api_app_url_icons = 'http://www.meteo-paris.com/accueil/jour_plus/'
         self.summary = ''
         self.temperatures = []
         self.last_update_summary = 0
@@ -45,3 +47,21 @@ class WeatherService:
                 print('Connection Error')
         return self.temperatures
 
+    def get_weather_icons(self, tomorrow):
+        # The POST request can only get next day's weather, so we need today if we need tomorrow's weather
+        reference_date = datetime.now() if tomorrow else datetime.now() - timedelta(days=1)
+        timestamp = datetime.timestamp(reference_date)
+        try:
+            r = requests.get(self.api_app_url_icons + str(timestamp))
+            tree = html.fromstring(r.content)
+            print(tree.xpath('//img[@class="jBox"]/@src')[0])
+            print(tree.xpath('//img[@class="jBox"]/@src')[1])
+            print(tree.xpath('//img[@class="jBox"]/@src')[2])
+            print(tree.xpath('//img[@class="jBox"]/@src')[3])
+        except TimeoutError:
+            print('Timeout Error')
+            return 'Timeout Error'
+        except ConnectionError:
+            print('Connection Error')
+            return 'Connection Error'
+        return 0
