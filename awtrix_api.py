@@ -16,31 +16,52 @@ def display_text(text, color):
     r = requests.post(api_app_url, json=payload, headers=headers)
 
 
-def show_weather_symbols(morning, noon, evening):
+def show_weather_symbols(tomorrow, morning, afternoon, evening):
     api_app_url = 'http://192.168.1.6:7000/api/v3/draw'
     headers = {'content-type': 'application/json'}
 
+    upper_color = [100, 100, 100] if tomorrow else [180, 180, 180]
+    lower_color = [180, 180, 180] if tomorrow else [100, 100, 100]
+
     payload = {
-        "repeat": 10,
+        "repeat": 0,
         "draw": [
             {
-                "position": [0, 0],
-                "type": "bmp",
-                "size": [8, 8],
-                "data": weather_icons[morning-1]
+                "type": "line",
+                "start": [0, 0],
+                "end": [0, 3],
+                "color": upper_color
             },
             {
-                "type": "text",
-                "string": '{0:>5.1f}°'.format(0),
-                "position": [8, 1],
-                "color": [246, 0, 242]
+                "type": "line",
+                "start": [0, 4],
+                "end": [0, 8],
+                "color": lower_color
+            },
+            {
+                "position": [3, 0],
+                "type": "bmp",
+                "size": [8, 8],
+                "data": weather_icons[morning - 1]
+            },
+            {
+                "position": [13, 0],
+                "type": "bmp",
+                "size": [8, 8],
+                "data": weather_icons[afternoon - 1]
+            },
+            {
+                "position": [23, 0],
+                "type": "bmp",
+                "size": [8, 8],
+                "data": weather_icons[evening - 1]
             },
             {
                 "type": "show"
             },
             {
                 "type": "wait",
-                "ms": 1000
+                "ms": 3000
             },
             {
                 "type": "exit"
@@ -52,84 +73,51 @@ def show_weather_symbols(morning, noon, evening):
     r = requests.post(api_app_url, json=payload, headers=headers)
 
 
-def show_high_low_temp(temperatures):
+def show_weather_temperatures(tomorrow, morning, afternoon, evening):
     api_app_url = 'http://192.168.1.6:7000/api/v3/draw'
     headers = {'content-type': 'application/json'}
+
+    upper_color = [100, 100, 100] if tomorrow else [180, 180, 180]
+    lower_color = [180, 180, 180] if tomorrow else [100, 100, 100]
+
+    morning_color = [10, 10, 255] if morning < 0 else [250, 0, 0]
+    afternoon_color = [10, 10, 255] if afternoon < 0 else [250, 0, 0]
+    evening_color = [10, 10, 255] if evening < 0 else [250, 0, 0]
 
     payload = {
         "repeat": 0,
         "draw": [
             {
                 "type": "line",
-                "start": [4, 7],
-                "end": [14, 7],
-                "color": [180, 180, 180]
+                "start": [0, 0],
+                "end": [0, 3],
+                "color": upper_color
             },
             {
                 "type": "line",
-                "start": [16, 7],
-                "end": [26, 7],
-                "color": [100, 100, 100]
+                "start": [0, 4],
+                "end": [0, 8],
+                "color": lower_color
             },
             {
                 "type": "text",
-                "string": temperatures[0],
-                "position": [4, 1],
-                "color": [10, 10, 255]
+                "string": '{:>2}'.format(abs(morning)),
+                "position": [3, 1],
+                "color": morning_color
             },
             {
                 "type": "text",
-                "string": temperatures[1],
-                "position": [18, 1],
-                "color": [250, 0, 0]
-            },
-            {
-                "type": "text",
-                "string": "/",
+                "string": '{:>2}'.format(abs(afternoon)),
                 "position": [13, 1],
-                "color": [200, 200, 200]
-            },
-            {
-                "type": "show"
-            },
-            {
-                "type": "wait",
-                "ms": 3000
-            },
-            {
-                "type": "clear",
-            },
-            {
-                "type": "line",
-                "start": [4, 7],
-                "end": [14, 7],
-                "color": [100, 100, 100]
-            },
-            {
-                "type": "line",
-                "start": [16, 7],
-                "end": [26, 7],
-                "color": [180, 180, 180]
+                "color": afternoon_color
             },
             {
                 "type": "text",
-                "string": temperatures[2],
-                "position": [4, 1],
-                "color": [10, 10, 255]
+                "string": '{:>2}'.format(abs(evening)),
+                "position": [23, 1],
+                "color": evening_color
             },
-            {
-                "type": "text",
-                "string": temperatures[3],
-                "position": [18, 1],
-                "color": [250, 0, 0]
-            },
-            {
-                "type": "text",
-                "string": "/",
-                "position": [13, 1],
-                "color": [200, 200, 200]
-            },
-            {
+             {
                 "type": "show"
             },
             {

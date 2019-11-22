@@ -36,5 +36,13 @@ import color_constants
 #     display_text(weather_service.get_weather_summary(tomorrow=True), color_constants.INDIANRED)
 #     sleep(60)
 
+
 weather_service = WeatherService()
-weather_service.get_weather_icons(tomorrow=False)
+icons = weather_service.get_weather_icons(tomorrow=False)
+temperatures = weather_service.get_weather_temperatures(tomorrow=False)
+show_weather_symbols(False, icons[0], icons[1], icons[2])
+sleep(3)
+show_weather_temperatures(False, temperatures[0], temperatures[1], temperatures[2])
+sleep(3)
+
+print(weather_service.get_weather_icons(tomorrow=True))
