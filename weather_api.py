@@ -10,7 +10,8 @@ class WeatherService:
         self.api_app_url_summary = 'http://www.meteo-paris.com/ile-de-france/previsions.php'
         self.api_app_url_temperatures = 'http://www.meteo-paris.com/accueil/jour_plus/'
         self.api_app_url_icons = 'http://www.meteo-paris.com/accueil/jour_plus/'
-        self.summary = ''
+        self.summary_today = ''
+        self.summary_tomorrow = ''
         self.temperatures_today = []
         self.temperatures_tomorrow = []
         self.icons_today = []
@@ -24,10 +25,8 @@ class WeatherService:
             try:
                 r = requests.get(self.api_app_url_summary)
                 tree = html.fromstring(r.content)
-                if tomorrow:
-                    self.summary = tree.xpath('//span[@class="vertical_com_15j"]/p/text()')[1]
-                else:
-                    self.summary = tree.xpath('//span[@class="vertical_com_15j"]/p/text()')[0]
+                self.summary_today = tree.xpath('//span[@class="vertical_com_15j"]/p/text()')[0]
+                self.summary_tomorrow = tree.xpath('//span[@class="vertical_com_15j"]/p/text()')[1]
                 self.last_update_summary = time()
             except TimeoutError:
                 print('Timeout Error')
@@ -35,7 +34,7 @@ class WeatherService:
             except ConnectionError:
                 print('Connection Error')
                 return 'Connection Error'
-        return self.summary
+        return self.summary_tomorrow if tomorrow else self.summary_today
 
     def get_weather_temperatures(self, tomorrow):
         if time() - 1800 > self.last_update_temperatures:
