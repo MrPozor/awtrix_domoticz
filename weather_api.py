@@ -4,6 +4,7 @@ from lxml import html
 from time import time
 from datetime import datetime, timedelta
 
+
 class WeatherService:
     def __init__(self):
         self.api_app_url_summary = 'http://www.meteo-paris.com/ile-de-france/previsions.php'
