@@ -46,7 +46,7 @@ class Payload:
                           })
         self.draw.append({"type": "text", "string": '{0:>5.1f}°'.format(temperature), "position": [8, 1], "color": [246, 0, 242]})
         self.draw.append({"type": "show"})
-        self.draw.append({"type": "wait", "ms": 3000})
+        self.draw.append({"type": "wait", "ms": 4000})
 
 
     def add_power(self, power):
@@ -89,7 +89,7 @@ class Payload:
                                    64135, 64135, 64135, 0]
                           })
         self.draw.append({"type": "show"})
-        self.draw.append({"type": "wait", "ms": 3000})
+        self.draw.append({"type": "wait", "ms": 4000})
 
     def get_payload(self):
         self.draw.append({"type": "exit"})
