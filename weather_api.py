@@ -1,5 +1,6 @@
 import requests
 import re
+import traceback
 from lxml import html
 from time import time
 from datetime import datetime, timedelta
@@ -30,10 +31,10 @@ class WeatherService:
                 self.last_update_summary = time()
             except TimeoutError:
                 print('Timeout Error')
-                return 'Timeout Error'
+                traceback.print_exc()
             except ConnectionError:
                 print('Connection Error')
-                return 'Connection Error'
+                traceback.print_exc()
         return self.summary_tomorrow if tomorrow else self.summary_today
 
     def get_weather_temperatures(self, tomorrow):
@@ -53,10 +54,10 @@ class WeatherService:
                     self.temperatures_today = [morning_temp, afternoon_temp, evening_temp]
             except TimeoutError:
                 print('Timeout Error')
-                return 'Timeout Error'
+                traceback.print_exc()
             except ConnectionError:
                 print('Connection Error')
-                return 'Connection Error'
+                traceback.print_exc()
         return self.temperatures_tomorrow if tomorrow else self.temperatures_today
 
     def get_weather_icons(self, tomorrow):
@@ -79,9 +80,9 @@ class WeatherService:
                     self.icons_today = [morning_icon, afternoon_icon, evening_icon]
             except TimeoutError:
                 print('Timeout Error')
-                return 'Timeout Error'
+                traceback.print_exc()
             except ConnectionError:
                 print('Connection Error')
-                return 'Connection Error'
+                traceback.print_exc()
         return self.icons_tomorrow if tomorrow else self.icons_today
 
